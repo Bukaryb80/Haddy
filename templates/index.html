@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Haddy AI Agent</title>
+    <script>
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+
+        async function sendMessage() {
+            const userMessage = document.getElementById("userInput").value;
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: userMessage})
+            });
+            const data = await response.json();
+            document.getElementById("chatBox").innerText = data.response;
+            speak(data.response);
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to Haddy AI Agent</h1>
+    <input type="text" id="userInput" placeholder="Ask me something...">
+    <button onclick="sendMessage()">Send</button>
+    <p id="chatBox"></p>
+</body>
+</html>
